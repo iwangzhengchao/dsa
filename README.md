@@ -8,3 +8,6 @@
   - KMP algorithm 
   - Sunday algorithm 
   
+- [ ] brute force algorithm
+- [ ] KMP algorithm
+- [ ] Sunday algorithm 
