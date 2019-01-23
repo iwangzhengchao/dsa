@@ -2,7 +2,7 @@
 * @Author: z.c.wang
 * @Email:  iwangzhengchao@gmail.com
 * @Date:   2019-01-18 11:20:11
-* @Last Modified time: 2019-01-23 14:34:20
+* @Last Modified time: 2019-01-23 14:39:58
 */
 #include<iostream>
 #include<vector>
@@ -13,7 +13,8 @@
 using namespace std;
 
 /**
- * 方法1. 暴力求kmp* 方法2. KMP_next
+ * 方法1. brute force
+ * 方法2. KMP (kmp_next, kmp_dfa)
  * 方法3. Sunday
  */
 
