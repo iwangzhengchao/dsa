@@ -2,7 +2,7 @@
 * @Author: z.c.wang
 * @Email:  iwangzhengchao@gmail.com
 * @Date:   2019-01-19 10:18:36
-* @Last Modified time: 2019-01-19 12:12:25
+* @Last Modified time: 2019-01-23 11:02:50
 */
 #include<iostream>
 #include<vector>
@@ -189,7 +189,7 @@ int main(int argc, char const *argv[]) {
 	vector<int> array = RandArray(0, 1000, 200000);
     clock_t start = clock();
 	// QuickSort(array, 0, array.size()-1);
-	// HeapSort(array);
+	HeapSort(array);
 	// MergeSort(array);
 	// BubbleSort(array);
 	// SelectSort(array);

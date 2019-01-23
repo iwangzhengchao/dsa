@@ -2,7 +2,7 @@
 * @Author: z.c.wang
 * @Email:  iwangzhengchao@gmail.com
 * @Date:   2019-01-18 11:20:11
-* @Last Modified time: 2019-01-18 20:12:17
+* @Last Modified time: 2019-01-23 14:34:20
 */
 #include<iostream>
 #include<vector>
@@ -13,22 +13,21 @@
 using namespace std;
 
 /**
- * 方法1. 暴力求解
- * 方法2. KMP
+ * 方法1. 暴力求kmp* 方法2. KMP_next
  * 方法3. Sunday
  */
 
 /**
- * str_str description:
+ * brute_force description:
  * 暴力求解，在字符串s中匹配字符串p
- * @param  t [text, 长串]
+ * @param  t [text, 文本串]
  * @param  p [pattern, 模式串]
  * @return   [若s含有p, 则返回第一个匹配的位置，否则，返回-1]
  */
-int str_str(string t, string p){
+int brute_force(string t, string p){
 	int t_size = t.length();
 	int p_size = p.length();
-	if(t_size ==p_size && t_size == 0)
+	if(t_size == p_size && t_size == 0)
 		return 0;
 	if(t_size < p_size)
 		return -1;
@@ -50,6 +49,32 @@ int str_str(string t, string p){
 		}
 	}
 	return -1;
+}
+
+// 暴力求解的另一种写法
+int brute_force2(string t, string p){
+	int t_size = t.length();
+	int p_size = p.length();
+
+	if(t_size == p_size && t_size == 0)
+		return 0;
+	if(t_size < p_size)
+		return -1;
+
+	int i, j;
+	for(i = 0, j = 0; i < t_size && j < p_size; i++){
+		if(t[i] == p[j]){
+			j++;
+		}
+		else{
+			i -= j;
+			j = 0;
+		}
+	}
+	if(j == p_size) // 找到匹配
+		return i - j;
+	else // 为找到匹配
+		return -1;
 }
 
 /**
@@ -76,13 +101,13 @@ void ParticalMatchTable(string p, int next[]){
 }
 
 /**
- * [KMP description]
- * KMP algorithm
+ * kmp algorithm based on next
+ * kmp_next algorithm
  * @param  t [text string]
  * @param  p [pattern string]
  * @return   [若s含有p, 则返回第一个匹配的位置，否则，返回-1]
  */
-int KMP(string t, string p){
+int kmp_next(string t, string p){
 	int t_size = t.length();
 	int p_size = p.length();
 	int next[p_size];
@@ -98,6 +123,41 @@ int KMP(string t, string p){
 		else{
 			j = next[j];
 		}
+	}
+	if(j == p_size)
+		return i-j;
+	else
+		return -1;
+}
+
+/*kmp algorithm based on dfa */
+int kmp_dfa(string t, string p){
+	int row = 256;
+	int col = p.length();
+
+	// 动态分配数组并初始化
+    int** dfa = new int*[row];
+	for(int i = 0; i < row; i++)
+		dfa[i] = new int[col];
+	for(int i = 0 ; i < row ; i++)
+		for(int j = 0; j < col; j++)
+			dfa[i][j] = 0;
+
+	// 计算dfa
+	dfa[p[0]][0] = 1;
+	for (int j = 1, x = 0; j < col; ++j) {
+		for (int i = 0; i < row; ++i)
+			dfa[i][j] = dfa[i][x];
+		dfa[p[j]][j] = j + 1;
+		x = dfa[p[j]][x];
+	}
+
+	//	kmp algo
+	int i, j;
+	int t_size = t.length();
+	int p_size = p.length();
+	for (i = 0, j = 0; i < t_size && j < p_size; i++){
+	      j = dfa[t[i]][j];
 	}
 	if(j == p_size)
 		return i-j;
@@ -151,14 +211,16 @@ int Sunday(string t, string p){
  */
 int main(int argc, char const *argv[])
 {
-	string s = "bbc abcdab abcdabcdabde";
+	string t = "bbc abcdab abcdabcdabde";
 	string p = "abcdabd";
-	// 朴素匹配
-	cout<<"position : "<<str_str(s, p)<<endl;
-	// KMP
-	cout<<"KMP :"<<KMP(s, p)<<endl;
+	// brute force
+	cout<<"brute_force : "<<brute_force(t, p)<<endl;
+	// kmp_next
+	cout<<"kmp_next : "<<kmp_next(t, p)<<endl;
+	// kmp_dfa
+	cout<<"kmp_dfa : "<<kmp_dfa(t, p)<<endl;
 	// Sunday
-	cout<<"Sunday :"<<Sunday(s, p)<<endl;
+	cout<<"Sunday : "<<Sunday(t, p)<<endl;
     cout<<endl;
 	return 0;
 }
