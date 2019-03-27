@@ -10,6 +10,7 @@
 
 ### 排序算法 sort.cpp
   - QuickSort
+  - QuickSort_without_rec
   - HeapSort
   - MergeSort
   - BubbleSort
